@@ -1,0 +1,46 @@
+#작업클러스터 :  kubectl config use-context k8s
+#현재운영중인eshop-cart-app Pod의로그를 Kubernetes built-in logging 아키텍처(예: kubectl logs)에통합하는로그스트리밍 사이드카컨테이너를운영하시오.
+#  busybox 이미지를사용하여 price 라는이름의 side-car container를기존eshop-cart-app에추가합니다. 새 price 컨테이너는다음과같은 command를실행해야합니다.
+#Command: /bin/sh, -c, “tail -n+1 -f /var/log/cart-app.log”
+#  /var/log에마운트된볼륨을사용하여사이드카컨테이너에서로그파일cart-app.log를사용해야합니다. eshop-cart-app Pod와 cart-app 컨테이너를  수정하지마시오
+#  ❗Answer
+#  kubectl get pod eshop-cart-app -o yaml > sidecar.yaml cat sidecar.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: eshop-cart-app
+spec:
+  containers:
+    - image: busybox
+      name: cart-app
+      command: ['/bin/sh', '-c', 'i=1;while :;do echo -e "$i: Price: $((RANDOM % 10000 + 1))" >> /var/log/cart-app.log; i=$((i+1));']
+      volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+  volumes:
+  - emptyDir: {}
+    name: varlog
+#vi sidecar.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: eshop-cart-app
+spec:
+  containers:
+  - image: busybox
+    name: cart-app
+    command: ['/bin/sh', '-c', 'i=1;while :;do echo -e "$i: Price: $((RANDOM % 10000 + 1))" >> /var/log/cart-app.log; i=$((i+1));']
+    volumeMounts:
+    - name: varlog
+      mountPath: /var/log
+  - name: price
+    image: busybox
+    args: [/bin/sh, -c, "tail -n+1 -f /var/log/cart-app.log"]
+    volumeMounts:
+    - name: varlog
+      mountPath: /var/log
+  volumes:
+    - emptyDir: {}
+      name: varlog
+#  kubectl delete pod eshop-cart-app kubectl apply -f multi.yaml

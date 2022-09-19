@@ -1,0 +1,11 @@
+#  ❓11. Pod Scale-out
+#  Cluster: kubectl config use-contex k8s
+#    Expand the number of running Pods in "eshop-order" to 5.
+#  namespace: devops deployment: eshop-order replicas: 5
+#    ❗Answer
+
+
+
+#kubectl deployment -n devops
+#kubectl get deployment eshop-order -n devops
+#kubectl scale deployment eshop-order --replicas=5 --namespace devops
