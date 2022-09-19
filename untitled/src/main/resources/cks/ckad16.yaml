@@ -1,0 +1,12 @@
+#Create a nginx pod
+kubectl run nginx-resolver --image=nginx --port=80
+kubectl expose pod nginx-resolver --name nginx-resolver-service --port=80
+kubectl get svc nginx-resolver-service
+nginx-resolver-service  10.104.150.11
+  # Test:Service DNS Resolution recorded correctly -> /var/CKA2022/nginx.svc
+kubectl run test-nslookup --image=busybox:1.28 -it --restart=Never --rm -- nslookup 10.104.150.11
+kubectl run test-nslookup --image=busybox:1.28 -it --restart=Never --rm -- nslookup nginx-resolver-service > /var/CKA2022/nginx.s
+  # Test: Pod DNS resolution recorded correctly -> /var/CKA2022/nginx.pod
+kubectl get pod ngnix-resolver -o wide nginx-resolver  10.244.1.55
+kubectl run test-nslookup --image=busybox:1.28 -it --restart=Never --rm -- nslookup 10-244-1-55.default.pod.cluster.local > /var/ $ cat /var/CKA2022/nginx.svc
+$ cat /var/CKA2022/nginx.pod

@@ -1,0 +1,45 @@
+#  15. Deploy and Service
+#  작업클러스터: kubectl config use-context k8s
+#    Reconfigure the existing deployment front-end  and add a port specification named http  exposing port 80/tcp  of the existing container nginx.
+#    Create a new service named front-end-svc  exposing the container port http.
+#    Configure the new service to also expose the individual Pods via a NodePort  on the nodes on which they are scheduled
+
+
+
+#  kubectl get deploy front-end -o yaml > front-end.yaml cat > front-end.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-end
+spec:
+  selector:
+    matchLabels:
+      app: front-end
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: front-end
+    spec:
+      containers:
+        - name: http
+          image: nginx
+          ports:
+             - name: http
+               containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end-svc
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: front-end
+#kubectl delete deploy front-end
+#kubectl apply -f front-end.yaml
+#kubectl get deployments.apps,svc
