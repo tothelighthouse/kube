@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pv-volume
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi
+  storageClassName: csi-hostpath-sc kubectl apply -f pvc.yaml
+  kubectl get pv,pvc vi pod-with-pvc.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-server
+spec:
+  containers:
+  - name: web-server
+    image: nginx
