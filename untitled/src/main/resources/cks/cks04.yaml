@@ -1,0 +1,7 @@
+    ❓4. Management Node
+    Cluster: kubectl config use-context k8s
+        Set the node named k8s-worker1 as unavailable and reschedule all the pods running on it.
+        ❗Answer
+        kubectl drain k8s-worker2 --ignore-daemonsets --force
+        kubectl get nodes
+        kubectl get pods

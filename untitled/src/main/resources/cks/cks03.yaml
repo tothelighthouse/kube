@@ -1,0 +1,7 @@
+  ❓3. Count the Number of Nodes That Are Ready to Run Normal Workloads
+  Cluster: kubectl config use-context hk8s
+    Determine how many nodes in the cluster are ready to run normal workloads (i.e., workloads that do not have any special tolerations).
+    Output this number to the file  /var/CKA2022/count.txt
+    ❗Answer
+    kubectl get nodes | grep -i -w ready | wc -l > /var/CKA2022/count.txt cat /var/CKA2022/count.txt
+    3

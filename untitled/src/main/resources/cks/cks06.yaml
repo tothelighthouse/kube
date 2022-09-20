@@ -1,0 +1,16 @@
+#  ❓6. Cluster Upgrade - only Master
+#  작업클러스터 : kubectl config use-context k8s upgrade system : hk8s-m
+#    Given an existing Kubernetes cluster running version 1.22.4 ,
+#    upgrade all of the Kubernetes control plane and node components on the master node only to version 1.23.3 . Be sure to drain  the master  node before upgrading it and uncordon  it after the upgrade.
+#    ❗Answer
+#    # kubeadm 업그레이드
+#    sudo yum install -y kubeadm-1.23.3-0 --disableexcludes=kubernetes kubeadm version
+#    # node components 업그레이드
+#    sudo kubeadm upgrade plan v1.23.3 sudo kubeadm upgrade apply v1.23.3
+#    # 노드 드레인
+#    kubectl drain hk8s-m --ignore-daemonsets # kubelet과 kubectl 업그레이드
+#    sudo yum install -y kubelet-1.23.3-0 kubectl-1.23.3-0 --disableexcludes=kubernetes
+#    sudo systemctl daemon-reload
+#    sudo systemctl restart kubelet
+#    # 노드 uncordon
+#    sudo kubectl uncordon hk8s-m

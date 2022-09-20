@@ -1,0 +1,13 @@
+#❓2. Node Troubleshooting
+#Cluster: kubectl config use-context hk8s
+#  A Kubernetes worker node, named hk8s-w2 is in state NotReady.
+#  Investigate why this is the case, and perform any appropriate steps to bring the node to a Ready state, ensuring that any changes are made permanent.
+#  ❗Answer
+
+  $ kubectl get nodes $ ssh hk8s-w2
+  $ sudo -i # docker ps
+  # systemctl status docker
+  # systemctl status kubelet
+  # systemctl enable --now kubelet # systemctl status kubelet
+  # exit $ exit
+  $ kubectl get nodes

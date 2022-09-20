@@ -1,0 +1,21 @@
+  ❓8. Pod 생성하기
+  작업클러스터 : kubectl config use-context k8s
+    Create a new namespace and create a pod in the namespace TASK:
+  namespace name: cka-exam pod Name: pod-01
+  image: busybox
+  environment Variable:  CERT = "CKA-cert" command: /bin/sh
+  args: -c "while true; do echo $(CERT); sleep 10;done" ❗Answer
+    kubectl create namespace cka-exam
+    kubectl get namespaces cka-exam
+    kubectl run pod-01 --image=busybox --dry-run=client -o yaml > pod-01.yaml vi pod-01.yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+  name: pod-01 namespace: cka-exam
+  spec:
+  containers:
+    - env:
+    - name: CERT
+  value: CKA-cert image: busybox name: pod-01 command: ["/bin/sh"]
+  args: ["-c", "while true; do echo $(CERT); sleep 10;done"] kubectl apply -f pod-01.yaml
+    kubectl get pod -n cka-exam

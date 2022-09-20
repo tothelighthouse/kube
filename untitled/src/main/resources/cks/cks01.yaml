@@ -1,0 +1,7 @@
+#  ❓1. Retrieve Error Messages from a Container Log
+#  Cluster: kubectl config use-context hk8s
+#    In the customa namespace, check the log for the nginx container in the custom-app Pod. Save the lines which contain the text “error” to the file /var/CKA2022/errors.txt.
+#    ❗Answer
+#kubectl get pods -n customera
+#kubectl logs custom-app -n customera | grep -i error > /var/CKA2022/error.txt
+#cat /var/CKA2022/error.txt

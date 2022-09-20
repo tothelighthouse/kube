@@ -1,0 +1,21 @@
+        ❓5. ETCD backup & restore
+        작업클러스터 : kubectl config use-context k8s
+                First, create a snapshot of the existing etcd instance running at https://127.0.0.1:2379 , saving the snapshot to /data/etcd-
+                snapshot.db .
+        Next, restore an existing, previous snapshot located at /data/etcd-snapshot-previous.db . The following TLS certificates/key are supplied for connecting to the server with etcdctl:
+        CA certificate: /etc/kubernetes/pki/etcd/ca.crt
+        Client certificate: /etc/kubernetes/pki/etcd/server.crt
+        Client key: /etc/kubernetes/pki/etcd/server.key
+                ❗Answer
+                        ssh k8s-master sudo -i
+                        sudo ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \ --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+                        --cert=/etc/kubernetes/pki/etcd/server.crt \ --key=/etc/kubernetes/pki/etcd/server.key \ snapshot save /data/etcd-snapshot.db
+                        sudo ETCDCTL_API=3 etcdctl --data-dir=/var/lib/etcd-previous snapshot restore /data/etcd-snapshot-previous.db
+                        sudo tree /var/lib/etcd-previous/
+                        sudo vi /etc/kubernetes/manifests/etcd.yaml
+                ...
+                - hostPath:
+                path: /var/lib/etcd-previous type: DirectoryOrCreate
+                name: etcd-data
+                        sudo docker ps -a | grep etcd exit
+                        exit
